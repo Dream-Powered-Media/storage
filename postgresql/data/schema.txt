@@ -1,0 +1,121 @@
+Table media {
+  media_id uuid [primary key]
+  media_name varchar
+  media_type varchar
+  media_link varchar
+  updated_at timestamp
+  deleted_at timestamp
+  author_id uuid
+  author_link varchar
+}
+
+Table media_links {
+  media_link_id uuid [primary key]
+  media_link_name varchar
+  media_id uuid
+  directory_parent uuid
+  related_community uuid
+  grade integer
+}
+
+Table directories {
+  directory_id uuid [primary key]
+  directory_parent uuid
+  related_community uuid
+  directory_name varchar
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Table communities {
+  community_id uuid [primary key]
+  community_name varchar
+  community_description text
+}
+
+Table users {
+  user_id uuid [primary key]
+  user_name varchar
+  user_bio varchar
+  is_author varchar
+}
+
+
+
+
+
+Table author_requests {
+  author_request_id uuid [primary key]
+  user_id uuid
+  mail varchar
+  is_responded bool
+}
+
+Table role_requests {
+  role_request_id uuid [primary key]
+  user_id uuid
+  role_id uuid
+  is_responded bool
+}
+
+
+
+
+
+Table actions {
+  action_id uuid [primary key]
+  action_name varchar
+}
+
+Table roles {
+  role_id uuid [primary key]
+  role_name varchar
+}
+
+
+
+
+
+Table user_community_relations {
+  relation_id uuid [primary key]
+  user_id uuid
+  community_id uuid
+  role_id uuid
+}
+
+Table action_role_relations {
+  relation_id uuid [primary key]
+  action_id uuid
+  role_id uuid
+}
+
+
+
+
+Ref: media.media_id < media_links.media_id
+
+Ref: directories.directory_id < directories.directory_parent
+
+Ref: directories.directory_id < media_links.directory_parent
+
+Ref: communities.community_id < directories.related_community
+
+Ref: communities.community_id < media_links.related_community
+
+Ref: communities.community_id < user_community_relations.community_id
+
+Ref: users.user_id < user_community_relations.user_id
+
+Ref: users.user_id < media.author_id
+
+Ref: users.user_id < author_requests.user_id
+
+Ref: users.user_id < role_requests.user_id
+
+Ref: roles.role_id < user_community_relations.role_id
+
+Ref: roles.role_id < role_requests.role_id
+
+Ref: roles.role_id < action_role_relations.role_id
+
+Ref: actions.action_id < action_role_relations.action_id

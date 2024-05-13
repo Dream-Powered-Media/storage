@@ -1,0 +1,50 @@
+{
+  "community_id": "68b34f39-5240-48a0-88a1-6700e90df26c",
+  "community_name": "Forest angels",
+  "community_description": "description",
+  "community_roles": [
+    {
+      "user_name": "jussiar",
+      "user_id": "60e5c2f2-65a9-43f8-a71b-61a324031b07",
+      "role_id": "648fd07f-dc38-41d7-b682-cceb5a9ccb91"
+    }
+  ],
+  "community_actual_top": [
+    {
+      "media_link_id": "4a43759c-0a5a-467c-be07-0c9c21b1586d",
+      "media_link_name": "Oleg"
+    },
+    {
+      "media_link_id": "a0334eba-4703-4505-a24a-56e485221eb6",
+      "media_link_name": "jussiar"
+    }
+  ],
+  "structure": [
+    {
+      "type": "dir",
+      "id": "",
+      "dir_b": {
+        "type": "dir",
+        "id": "",
+        "media_a": {
+          "type": "media",
+          "id": "4a43759c-0a5a-467c-be07-0c9c21b1586d"
+        }
+      }
+    },
+    {
+      "type": "dir",
+      "id": "",
+      "children": [
+        {
+          "type": "media",
+          "id": "a0334eba-4703-4505-a24a-56e485221eb6"
+        }
+      ]
+    },
+    {
+      "type": "media",
+      "id": ""
+    }
+  ]
+}
