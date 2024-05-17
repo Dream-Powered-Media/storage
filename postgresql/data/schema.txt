@@ -15,7 +15,8 @@ Table media_links {
   media_id uuid
   directory_parent uuid
   related_community uuid
-  grade integer
+  grade float
+  admin_grade float
 }
 
 Table directories {
@@ -37,7 +38,7 @@ Table users {
   user_id uuid [primary key]
   user_name varchar
   user_bio varchar
-  is_author varchar
+  is_author bool
 }
 
 
@@ -55,6 +56,7 @@ Table role_requests {
   role_request_id uuid [primary key]
   user_id uuid
   role_id uuid
+  community_id uuid
   is_responded bool
 }
 
@@ -70,6 +72,25 @@ Table actions {
 Table roles {
   role_id uuid [primary key]
   role_name varchar
+}
+
+
+Table grades {
+  grade_id uuid [primary key]
+  grade_value float
+  media_link_id varchar
+  user_id uuid
+  user_role_id role_id
+}
+
+
+
+Table user_actions {
+  id uuid [primary key]
+  action_id uuid
+  user_id uuid
+  community_id uuid
+  details varchar
 }
 
 
@@ -92,7 +113,10 @@ Table action_role_relations {
 
 
 
+
 Ref: media.media_id < media_links.media_id
+
+Ref: media_links.media_link_id < grades.media_link_id
 
 Ref: directories.directory_id < directories.directory_parent
 
@@ -104,6 +128,8 @@ Ref: communities.community_id < media_links.related_community
 
 Ref: communities.community_id < user_community_relations.community_id
 
+Ref: communities.community_id < user_actions.community_id
+
 Ref: users.user_id < user_community_relations.user_id
 
 Ref: users.user_id < media.author_id
@@ -112,10 +138,18 @@ Ref: users.user_id < author_requests.user_id
 
 Ref: users.user_id < role_requests.user_id
 
+Ref: users.user_id < user_actions.user_id
+
+Ref: users.user_id < grades.user_id
+
 Ref: roles.role_id < user_community_relations.role_id
 
 Ref: roles.role_id < role_requests.role_id
 
 Ref: roles.role_id < action_role_relations.role_id
 
+Ref: roles.role_id < grades.user_role_id
+
 Ref: actions.action_id < action_role_relations.action_id
+
+Ref: actions.action_id < user_actions.action_id

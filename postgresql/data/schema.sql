@@ -15,7 +15,8 @@ CREATE TABLE "media_links" (
   "media_id" uuid,
   "directory_parent" uuid,
   "related_community" uuid,
-  "grade" integer
+  "grade" float,
+  "admin_grade" float
 );
 
 CREATE TABLE "directories" (
@@ -37,7 +38,7 @@ CREATE TABLE "users" (
   "user_id" uuid PRIMARY KEY,
   "user_name" varchar,
   "user_bio" varchar,
-  "is_author" varchar
+  "is_author" bool
 );
 
 CREATE TABLE "author_requests" (
@@ -51,6 +52,7 @@ CREATE TABLE "role_requests" (
   "role_request_id" uuid PRIMARY KEY,
   "user_id" uuid,
   "role_id" uuid,
+  "community_id" uuid,
   "is_responded" bool
 );
 
@@ -62,6 +64,22 @@ CREATE TABLE "actions" (
 CREATE TABLE "roles" (
   "role_id" uuid PRIMARY KEY,
   "role_name" varchar
+);
+
+CREATE TABLE "grades" (
+  "grade_id" uuid PRIMARY KEY,
+  "grade_value" float,
+  "media_link_id" varchar,
+  "user_id" uuid,
+  "user_role_id" role_id
+);
+
+CREATE TABLE "user_actions" (
+  "id" uuid PRIMARY KEY,
+  "action_id" uuid,
+  "user_id" uuid,
+  "community_id" uuid,
+  "details" varchar
 );
 
 CREATE TABLE "user_community_relations" (
@@ -79,6 +97,8 @@ CREATE TABLE "action_role_relations" (
 
 ALTER TABLE "media_links" ADD FOREIGN KEY ("media_id") REFERENCES "media" ("media_id");
 
+ALTER TABLE "grades" ADD FOREIGN KEY ("media_link_id") REFERENCES "media_links" ("media_link_id");
+
 ALTER TABLE "directories" ADD FOREIGN KEY ("directory_parent") REFERENCES "directories" ("directory_id");
 
 ALTER TABLE "media_links" ADD FOREIGN KEY ("directory_parent") REFERENCES "directories" ("directory_id");
@@ -89,6 +109,8 @@ ALTER TABLE "media_links" ADD FOREIGN KEY ("related_community") REFERENCES "comm
 
 ALTER TABLE "user_community_relations" ADD FOREIGN KEY ("community_id") REFERENCES "communities" ("community_id");
 
+ALTER TABLE "user_actions" ADD FOREIGN KEY ("community_id") REFERENCES "communities" ("community_id");
+
 ALTER TABLE "user_community_relations" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");
 
 ALTER TABLE "media" ADD FOREIGN KEY ("author_id") REFERENCES "users" ("user_id");
@@ -97,10 +119,18 @@ ALTER TABLE "author_requests" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("u
 
 ALTER TABLE "role_requests" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");
 
+ALTER TABLE "user_actions" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");
+
+ALTER TABLE "grades" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("user_id");
+
 ALTER TABLE "user_community_relations" ADD FOREIGN KEY ("role_id") REFERENCES "roles" ("role_id");
 
 ALTER TABLE "role_requests" ADD FOREIGN KEY ("role_id") REFERENCES "roles" ("role_id");
 
 ALTER TABLE "action_role_relations" ADD FOREIGN KEY ("role_id") REFERENCES "roles" ("role_id");
 
+ALTER TABLE "grades" ADD FOREIGN KEY ("user_role_id") REFERENCES "roles" ("role_id");
+
 ALTER TABLE "action_role_relations" ADD FOREIGN KEY ("action_id") REFERENCES "actions" ("action_id");
+
+ALTER TABLE "user_actions" ADD FOREIGN KEY ("action_id") REFERENCES "actions" ("action_id");
