@@ -104,3 +104,8 @@
 - документация постгрес: https://www.postgresql.org/docs/
 
 - документация монго: https://www.mongodb.com/docs/
+
+
+### Поддержка
+
+https://forms.gle/jCtCTTQP4tjJcUBP8
